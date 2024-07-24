@@ -14,15 +14,10 @@ import java.util.Set;
 public class PostService {
 
     @Autowired
-    private final PostRepo postRepo;
+    private PostRepo postRepo;
 
     @Autowired
-    private final UserService userService;
-
-    public PostService(PostRepo postRepo, UserService userService) {
-        this.postRepo = postRepo;
-        this.userService = userService;
-    }
+    private UserService userService;
 
     public List<Post> getPosts() {
         return postRepo.findAll();
@@ -33,7 +28,7 @@ public class PostService {
     }
 
     public List<Post> getPostsByUser(int userId) {
-        return postRepo.findByUser_idOOrderByCreatedAtDesc(userId).orElseThrow();
+        return postRepo.findByUser_IdOrderByCreatedAtDesc(userId).orElseThrow();
     }
 
     public List<Post> getPostsByFollowing(int userId) {
@@ -42,7 +37,7 @@ public class PostService {
         List<Post> posts = new ArrayList<>();
 
         for (Follow follow : following) {
-            posts.addAll(postRepo.findByUser_idOOrderByCreatedAtDesc(follow.getFollowing().getId()).orElseThrow());
+            posts.addAll(postRepo.findByUser_IdOrderByCreatedAtDesc(follow.getFollowing().getId()).orElseThrow());
         }
 
         return posts;

@@ -14,14 +14,9 @@ import java.util.Optional;
 public class UserImageService {
 
     @Autowired
-    private final UserImageRepo userImageRepo;
+    private UserImageRepo userImageRepo;
     @Autowired
-    private final UserService userService;
-
-    public UserImageService(UserImageRepo userImageRepo, UserService userService) {
-        this.userImageRepo = userImageRepo;
-        this.userService = userService;
-    }
+    private UserService userService;
 
     public UserImage saveUserImage(MultipartFile file, int userId) throws IOException {
         UserImage userImage = new UserImage();

@@ -14,11 +14,7 @@ import java.util.Set;
 public class UserService {
 
     @Autowired
-    private final UserRepo userRepo;
-
-    public UserService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
+    private UserRepo userRepo;
 
     public List<User> getUsers() {
         return userRepo.findAll();

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface LikeRepo extends JpaRepository<Like, Integer> {
 
     void deleteById (int id);
-    Optional<List<Like>> findByPostId(int postId);
-    Optional<List<Like>> findByUserId(int userId);
+    Optional<List<Like>> findByPost_Id (int postId);
+    Optional<List<Like>> findByUser_Id (int user_id);
     Optional<Like> findByUserIdAndPostId(int userId, int postId);
 }

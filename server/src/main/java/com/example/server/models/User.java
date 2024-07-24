@@ -59,3 +59,14 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     Set<Comment>comments;
 }
+
+/*
+json example
+{
+    "id": 1,
+    "name": "John",
+    "lastName": "Doe",
+    "email": "
+    "password
+}
+ */
