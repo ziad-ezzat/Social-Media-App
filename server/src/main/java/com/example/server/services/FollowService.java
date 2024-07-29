@@ -13,12 +13,14 @@ public class FollowService {
     @Autowired
     private UserService userService;
 
-    public Follow saveFollow(Follow follow) {
-        if (userService.isFollowing(follow.getUser().getId(), follow.getFollowing().getId())) {
-            followRepo.delete(followRepo.findByUser_IdAndFollowing_Id(follow.getUser().getId(), follow.getFollowing().getId()).orElseThrow().get(0));
-            return null;
+    public void follow(int userId, int followingId) {
+        if (userService.isFollowing(userId, followingId)) {
+            followRepo.delete(followRepo.findByUser_IdAndFollowing_Id(userId,followingId).orElseThrow());
         } else {
-            return followRepo.save(follow);
+            Follow follow = new Follow();
+            follow.setUser(userService.getUserById(userId));
+            follow.setFollowing(userService.getUserById(followingId));
+            followRepo.save(follow);
         }
     }
 }

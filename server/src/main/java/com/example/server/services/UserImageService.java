@@ -21,7 +21,7 @@ public class UserImageService {
     public UserImage saveUserImage(MultipartFile file, int userId) throws IOException {
         UserImage userImage = new UserImage();
         userImage.setData(ImageUtil.compressImage(file.getBytes()));
-        userImage.setUser(userService.getUser(userId));
+        userImage.setUser(userService.getUserById(userId));
 
         userImageRepo.save(userImage);
         return userImage;

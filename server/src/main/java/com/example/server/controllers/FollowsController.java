@@ -14,9 +14,10 @@ public class FollowsController {
     @Autowired
     private FollowService followService;
 
-    @PostMapping("/add")
-    public ResponseEntity<String> add(@RequestBody Follow followRequest){
-        followService.saveFollow(followRequest);
+    //used **********
+    @PostMapping("/follow")
+    public ResponseEntity<String> follow(@RequestParam int userId, @RequestParam int followingId){
+        followService.follow(userId, followingId);
         return new ResponseEntity<>("Followed", HttpStatus.OK);
     }
 }
