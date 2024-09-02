@@ -2,14 +2,13 @@ package com.example.server.repositories;
 
 import com.example.server.models.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
+@Repository
+public interface PostRepo extends JpaRepository<Post, Long> {
 
-public interface PostRepo extends JpaRepository<Post, Integer> {
-
-    Optional<List<Post>> findByUser_IdOrderByCreatedAtDesc (int id);
-
-    void deleteById(int id);
+    List<Post> findByUserIdOrderByCreatedAtDesc(Long userId);
+    List<Post> findAllByOrderByCreatedAtDesc();
 }

@@ -1,61 +1,30 @@
 package com.example.server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(name = "name")
-    @NotNull
-    private String name;
+    @NotBlank(message = "Username is required")
+    private String userName;
 
-    @Column(name = "last_name")
-    @NotNull
-    private String lastName;
-
-    @Column(name = "email")
-    @NotNull
-    @Email
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
     private String email;
 
-    @Column(name = "password")
-    @NotNull
+    @NotBlank(message = "Password is required")
     private String password;
-
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<Follow> following;
-
-    @OneToMany(mappedBy = "following",cascade = CascadeType.ALL)
-    Set<Follow> followers;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<Post> posts;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<Like> likes;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<UserImage> images;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<Comment>comments;
 }

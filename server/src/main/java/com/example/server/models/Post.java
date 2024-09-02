@@ -1,47 +1,30 @@
 package com.example.server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "posts")
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    private Long id;
 
-    @NotNull
-    @Column(name = "description")
     private String description;
 
-    @NotNull
-    @Column(name = "created_at")
-    private String createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
-
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    Set<Like> likes;
-
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    Set<PostImage> postImages;
-
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    Set<Comment> comments;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private User user;
 }

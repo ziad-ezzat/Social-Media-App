@@ -1,14 +1,15 @@
 package com.example.server.services;
 
-import com.example.server.models.Follow;
 import com.example.server.models.Post;
+import com.example.server.models.User;
 import com.example.server.repositories.PostRepo;
+import com.example.server.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -17,37 +18,21 @@ public class PostService {
     private PostRepo postRepo;
 
     @Autowired
-    private UserService userService;
+    private UserRepo userRepo;
 
-    public List<Post> getPosts() {
-        return postRepo.findAll();
-    }
+    public Post savePost(Long userId, Post post) {
+        Optional<User> user = userRepo.findById(userId);
 
-    public Post getPostById(int id) {
-        return postRepo.findById(id).orElse(null);
-    }
-
-    public List<Post> getPostsByUser(int userId) {
-        return postRepo.findByUser_IdOrderByCreatedAtDesc(userId).orElseThrow();
-    }
-
-    public List<Post> getPostsByFollowing(int userId) {
-
-        Set<Follow> following = userService.getFollowing(userId);
-        List<Post> posts = new ArrayList<>();
-
-        for (Follow follow : following) {
-            posts.addAll(postRepo.findByUser_IdOrderByCreatedAtDesc(follow.getFollowing().getId()).orElseThrow());
+        if (user.isPresent()) {
+            post.setUser(user.get());
+            post.setCreatedAt(LocalDateTime.now());
+            return postRepo.save(post);
+        } else {
+            throw new IllegalArgumentException("User not found");
         }
-
-        return posts;
     }
 
-    public Post savePost(Post post) {
-        return postRepo.save(post);
-    }
-
-    public void deletePost(int id) {
-        postRepo.deleteById(id);
+    public List<Post> getAllPosts() {
+        return postRepo.findAllByOrderByCreatedAtDesc();
     }
 }
